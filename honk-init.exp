@@ -1,0 +1,12 @@
+#!/usr/bin/expect
+
+spawn ./honk -datadir /config init
+expect "username: "
+send -- "$env(HONK_USERNAME)\n"
+expect "password: "
+send -- "$env(HONK_PASSWORD)\n"
+expect "listen address: "
+send -- "$env(HONK_LISTEN_ADDRESS)\n"
+expect "server name: "
+send -- "$env(HONK_SERVER_NAME)\n"
+expect "done."
