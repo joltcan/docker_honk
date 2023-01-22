@@ -8,7 +8,7 @@ This repository packages the docker version of honk.
 
 Read more about [honk](https://humungus.tedunangst.com/r/honk) here.
 
--- setup
+## setup
 
 honk expects to be fronted by a TLS terminating reverse proxy.
 
@@ -30,7 +30,7 @@ docker run \
 ```
 The sqlite db will be stored in /config, which I suggest you map to a persistent folder. USER/PW/ADDR/NAME also needs to be set for it to start.
 
--- upgrade
+## upgrade
 
 I did it like this, enter the container like so `docker exec -it honk ash`
 ```
@@ -39,19 +39,7 @@ I did it like this, enter the container like so `docker exec -it honk ash`
 ```
 Now exit the container (exit) and restart it with `docker restart honk`.
 
--- Build own docker containers
-
-`export VERSION=(develop|vX.X.X)`
-
-`make`
-
-Will download golang docker container, build the binary, package and build the honk binary and add to a alpine container.
-
-To run your own build: `make run`.
-
-Modify the files as you see fit. You can upload new builds to your own repository with `make push`
-
--- Ansible
+## Ansible
 
 I have included a [provision-honk](provision-honk.yml) file you can use. Just change the "hosts" parameter and set some defaults in host_vars or group_vars, and should be good to go:
 
@@ -67,7 +55,7 @@ honk_listen_address: 0.0.0.0:31337
 
 `ansible-provision provision-honk.yml`
 
--- Nginx
+## Nginx
 
 Here is a config to send the honk traffic to your honk docker container:
 
@@ -98,3 +86,15 @@ server {
     }
 }
 ```
+
+## Build own docker containers
+
+`export VERSION=(develop|vX.X.X)`
+
+`make`
+
+Will download golang docker container, build the binary, package and build the honk binary and add to a alpine container.
+
+To run your own build: `make run`.
+
+Modify the files as you see fit. You can upload new builds to your own repository with `make push`.
