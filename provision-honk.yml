@@ -1,0 +1,39 @@
+---
+- hosts: "{{ honk_docker_host | default('stor') }}"
+  become: yes
+
+  tasks:
+    - name:
+        "file : config directory"
+      file:
+        path: "{{ honk_config_path | default('/opt/honk') }}"
+        state: directory
+        mode: "{{ honk_config_path_mode | default('0750') }}"
+        owner: "{{ honk_docker_uid | default (1100) }}"
+      tags:
+        - directory
+
+    - name:
+        "docker_container : honk"
+      docker_container:
+        name: "{{ honk_name | default('honk') }}"
+        image: "{{ honk_docker_image | default('jolt/honk:latest') }}"
+        hostname: "{{ honk_hostname | default('honk') }}"
+        state: "{{ honk_docker_state | default('started') }}"
+        restart_policy: "{{ honk_docker_restart_policy | default('unless-stopped') }}"
+        restart: "{{ honk_docker_restart | default('true') }}" # should docker_container restart the host
+        user: "{{ honk_docker_uid | default (1100) }}"
+        env:
+          HONK_USERNAME: "{{ honk_username | default('username') }}"
+          HONK_PASSWORD: "{{ honk_password | default('password') }}"
+          HONK_LISTEN_ADDRESS: "{{ honk_listen_address | default('127.0.0.1:' + honk_listen_port | default('31337')) }}"
+          HONK_SERVER_NAME: "{{ honk_server_name | default('honk.example.com') }}"
+        ports:
+          - "{{ honk_docker_port | default(31337) }}:{{ honk_listen_port | default(31337) }}"
+        volumes:
+          - "{{ honk_config_path | default('/srv/honk') }}:/config"
+        networks_cli_compatible: "{{ honk_docker_networks_cli_compatible | default('true') }}"
+        container_default_behavior: "{{ honk_docker_container_default_behavior | default('no_defaults') }}"
+      tags:
+        - honk
+        - docker
