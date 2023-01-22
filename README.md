@@ -41,7 +41,7 @@ Now exit the container (exit) and restart it with `docker restart honk`.
 
 ## Ansible
 
-I have included a [provision-honk](provision-honk.yml) file you can use. Just change the "hosts" parameter and set some defaults in host_vars or group_vars, and should be good to go:
+I have included a [provision-honk](provision-honk.yml) file you can use. Just change the "hosts" parameter and set some defaults in host/group_vars and you should be good to go:
 
 host_vars/docker_host.yml:
 
